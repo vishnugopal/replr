@@ -15,6 +15,7 @@ class Replr
 
     copy_library_file
     copy_docker_file
+    initialize_docker
   end
 
   private
@@ -54,8 +55,9 @@ class Replr
 
   def copy_docker_file
     docker_file = "#{__dir__}/Dockerfile"
+    bootstrap_file = "#{__dir__}/replr-bootstrap.rb"
     FileUtils.cp(docker_file, workdir)
-    puts workdir
+    FileUtils.cp(bootstrap_file, workdir)
   end
 
   def libraries
@@ -68,5 +70,13 @@ class Replr
       gemfile << "gem '#{library}'\n"
     end
     gemfile
+  end
+
+  def initialize_docker
+    docker_image_tag = "replr/ruby-#{libraries.join('-')}"
+    Dir.chdir(workdir) do
+      system("docker build -t #{docker_image_tag} .")
+      system("docker run --rm -it #{docker_image_tag}")
+    end
   end
 end

@@ -7,4 +7,4 @@ RUN apk --update add --virtual build-dependencies ruby-dev build-base && \
 ADD . /app
 ENV RACK_ENV production
 WORKDIR /app
-CMD ["/usr/local/bundle/bin/bundle", "exec", "irb"]
+CMD ["bundle", "exec", "ruby", "replr-bootstrap.rb"]
