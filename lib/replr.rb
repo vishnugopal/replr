@@ -2,7 +2,7 @@ require 'tmpdir'
 
 # :nodoc:
 class Replr
-  attr_reader :arguments
+  attr_reader :arguments, :workdir
 
   def start
     @arguments = ARGV.map { |argument| argument.downcase.strip }
@@ -11,9 +11,10 @@ class Replr
     check_argument_length!
     check_stack!
 
-    workdir = Dir.mktmpdir
-    Dir.chdir(workdir)
-    puts library_file_with(libraries)
+    @workdir = Dir.mktmpdir
+
+    copy_library_file
+    copy_docker_file
   end
 
   private
@@ -39,6 +40,24 @@ class Replr
     end
   end
 
+  def puts_error(string)
+    STDERR.puts(string)
+  end
+
+  def copy_library_file
+    Dir.chdir(workdir) do
+      File.open('Gemfile', 'w') do |f|
+        f.write(library_file_with(libraries))
+      end
+    end
+  end
+
+  def copy_docker_file
+    docker_file = "#{__dir__}/Dockerfile"
+    FileUtils.cp(docker_file, workdir)
+    puts workdir
+  end
+
   def libraries
     arguments[1..-1]
   end
@@ -49,9 +68,5 @@ class Replr
       gemfile << "gem '#{library}'\n"
     end
     gemfile
-  end
-
-  def puts_error(string)
-    STDERR.puts(string)
   end
 end
