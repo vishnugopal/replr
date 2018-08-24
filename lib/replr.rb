@@ -107,7 +107,8 @@ class Replr
   end
 
   # Executes *new_command* if the previous *process_thread* had a
-  # non-zero return.
+  # non-zero return. Otherwise prints out *stderr* of the previous
+  # process to *STDERR*
   def execute_command_if_not_stderr(new_command, stderr, process_thread)
     outerror = stderr.read.chomp
     if process_thread.value.to_i.zero?
