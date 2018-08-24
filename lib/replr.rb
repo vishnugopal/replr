@@ -88,7 +88,7 @@ class Replr
   end
 
   # Runs *command* and only prints those lines that match
-  # *matching_regex* and doesn't match not_matching_regex. After
+  # *matching_regex* and doesn't match *not_matching_regex*. After
   # execution, it passes stderr and the waiting process thread
   # to a block.
   def execute_filtered_process(command, matching_regex,
