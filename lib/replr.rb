@@ -10,30 +10,52 @@ class Replr
 
     check_docker!
     check_argument_length!
-    check_stack!
+    check_arguments!
 
     @workdir = Dir.mktmpdir
     @docker_image_tag = "replr/ruby-#{libraries.join('-')}"
 
-    copy_library_file
-    copy_docker_file
-    initialize_docker_repl
+    process_arguments
   end
 
   private
 
+  def process_arguments
+    if arguments[0] == 'prune'
+      execute_prune_command
+    else
+      copy_library_file
+      copy_docker_file
+      initialize_docker_repl
+    end
+  end
+
   def check_argument_length!
     if arguments.empty?
-      puts_error 'Usage: replr <stack> <libraries...>'
+      puts_usage
       exit
     end
   end
 
-  def check_stack!
-    unless arguments[0] == 'ruby'
-      puts_error 'Only supports ruby for now'
+  def check_arguments!
+    unless ['ruby', 'prune'].include? arguments[0]
+      puts_error 'Only supports ruby as a stack right now'
+      puts_usage
       exit
     end
+  end
+
+  def puts_usage
+    puts_error "\nUsage: replr <stack> <libraries...>\n\n"
+    puts_error "A single line REPL for your favorite languages & libraries\n\n"
+    puts_error "\t<stack> is now only 'ruby'"
+    puts_error "\t<libraries...> is a space separated list of libraries for the stack\n\n"
+    puts_error "More commands:\n\n\treplr prune to delete all replr docker images (this saves space)"
+  end
+
+  def execute_prune_command
+    prune_command = %q(docker images -a |  grep "replr/" | awk '{print $3}' | xargs docker rmi)
+    system(prune_command)
   end
 
   def check_docker!

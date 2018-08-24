@@ -2,7 +2,7 @@
 
 A single line REPL for your favorite languages & libraries. Built on Docker.
 
-## Usage
+## Quickstart
 
 ```
 replr <stack> <libraries...>
@@ -25,6 +25,14 @@ gem install replr
 ```
 
 That's it! `replr` should now be available in your `$PATH`.
+
+## More Commands
+
+```
+replr prune
+```
+
+will delete all docker images associated with replr. This saves space!
 
 ## Details
 
