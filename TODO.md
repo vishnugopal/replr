@@ -2,8 +2,9 @@
 
 ## Planned
 
-[ ] Support another stack: Python?
 [ ] Separate argument processing & usage into separate class
+[ ] Re-architect to abstract away all stack dependencies
+[ ] Support another stack: Python?
 
 ## Done
 
