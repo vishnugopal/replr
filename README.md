@@ -64,7 +64,11 @@ The next time, it's much cleaner:
 
 ```
 ❯ bin/replr ruby chronic
-irb(main):001:0>
+irb(main):001:0> Chronic.parse("tomorrow")
+=> 2018-08-25 12:00:00 +0000
+irb(main):002:0>
 ```
 
-As you can see, replr tries its best to abstract away the underlying docker installation. You shouldn't have to worry about Dockerfiles & so on just to get a repl!
+As you can see, replr tries its best to abstract away the underlying docker installation. You shouldn't have to worry about Dockerfiles & so on just to get a REPL!
+
+It also tries its best to make sure libraries you mention are auto-required in the REPL, so you don't have to do any additional work!
