@@ -16,6 +16,16 @@ replr ruby chronic
 
 That's it! It's very simple.
 
+## Install
+
+replr is built on Ruby and requires Ruby 2.5+ installed.
+
+```
+gem install replr
+```
+
+That's it! `replr` should now be available in your `$PATH`.
+
 ## Details
 
 replr uses docker to manage different stacks and installed libraries. It creates docker images that are tagged `replr-<stack>-<libraries...>` for each stack and library combo you initiate.
@@ -25,7 +35,7 @@ The first time you start a new stack & library combo, docker will take some time
 This is how a full output from a replr install will look like the first time you try out a new stack & library combo:
 
 ```
-❯ bin/replr ruby chronic
+❯ replr ruby chronic
 (1/25) Upgrading musl (1.1.14-r14 -> 1.1.14-r16)
 (2/25) Installing gmp (6.1.0-r0)
 (3/25) Installing libgcc (5.3.0-r0)
@@ -63,7 +73,7 @@ irb(main):001:0>
 The next time, it's much cleaner:
 
 ```
-❯ bin/replr ruby chronic
+❯ replr ruby chronic
 irb(main):001:0> Chronic.parse("tomorrow")
 => 2018-08-25 12:00:00 +0000
 irb(main):002:0>
