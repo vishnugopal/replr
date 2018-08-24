@@ -2,7 +2,6 @@
 
 ## Planned
 
-- [ ] Sort arguments so that unnecessary images aren't created
 - [ ] Support versioning for stack and library
 - [ ] Separate argument processing & usage into separate class
 - [ ] Re-architect to abstract away all stack dependencies
@@ -10,6 +9,7 @@
 
 ## Done
 
+- [x] Sort arguments so that unnecessary images aren't created
 - [x] Have a `replr prune` command to delete all docker images created by replr
 - [x] Publish as gem
 - [x] Ensure that multiple gems work fine

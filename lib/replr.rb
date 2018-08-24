@@ -3,10 +3,11 @@ require 'open3'
 
 # :nodoc:
 class Replr
-  attr_reader :arguments, :workdir, :docker_image_tag
+  attr_reader :arguments, :workdir, :docker_image_tag, :libraries
 
   def start
     @arguments = ARGV.map { |argument| argument.downcase.strip }
+    @libraries = arguments[1..-1].sort!
 
     check_docker!
     check_argument_length!
@@ -82,10 +83,6 @@ class Replr
     bootstrap_file = "#{__dir__}/replr-bootstrap.rb"
     FileUtils.cp(docker_file, workdir)
     FileUtils.cp(bootstrap_file, workdir)
-  end
-
-  def libraries
-    arguments[1..-1]
   end
 
   def library_file_with(libraries)
