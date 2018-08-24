@@ -2,6 +2,7 @@
 
 ## Planned
 
+- [ ] Sort arguments so that unnecessary images aren't created
 - [ ] Separate argument processing & usage into separate class
 - [ ] Re-architect to abstract away all stack dependencies
 - [ ] Support another stack: Python?
