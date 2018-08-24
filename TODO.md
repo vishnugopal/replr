@@ -2,7 +2,8 @@
 
 ## Planned
 
-- [ ] Support versioning for stack and library
+- [ ] Support versioning for library
+- [ ] Support versioning for stack
 - [ ] Separate argument processing & usage into separate class
 - [ ] Re-architect to abstract away all stack dependencies
 - [ ] Support another stack: Python?
