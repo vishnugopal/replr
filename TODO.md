@@ -9,6 +9,7 @@
 
 ## Done
 
+- [x] Separate command execution into separate class
 - [x] Separate argument processing & usage into separate class
 - [x] Re-architect to start separating argument processing
 - [x] Sort arguments so that unnecessary images aren't created

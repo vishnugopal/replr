@@ -1,22 +1,24 @@
 require_relative '../replr'
 require_relative 'argument_processor'
+require_relative 'process_runner'
 
 require 'tmpdir'
 require 'open3'
 
 # :nodoc:
 class Replr::ImageMaker
-  attr_reader :argument_processor, :workdir, :docker_image_tag, :libraries
+  attr_reader :argument_processor, :process_runner
+  attr_reader :libraries, :workdir, :docker_image_tag
 
   def start
     @argument_processor = Replr::ArgumentProcessor.new
+    @process_runner = Replr::ProcessRunner.new
+
     @libraries = argument_processor.arguments[1..-1].sort!
-
-    check_docker!
-
     @workdir = Dir.mktmpdir
     @docker_image_tag = "replr/ruby-#{libraries.join('-')}"
 
+    check_docker!
     execute_processsed_arguments!
   end
 
@@ -34,11 +36,11 @@ class Replr::ImageMaker
 
   def execute_prune_command
     prune_command = %q(docker images -a |  grep "replr/" | awk '{print $3}' | xargs docker rmi)
-    system(prune_command)
+    process_runner.execute_command(prune_command)
   end
 
   def check_docker!
-    unless system('which docker >/dev/null')
+    unless process_runner.process_exists?('docker')
       puts_error 'Needs docker installed & in path to work.'
       exit
     end
@@ -77,41 +79,10 @@ class Replr::ImageMaker
       run_command = "docker run --rm -it #{docker_image_tag}"
       matching = Regexp.union([/upgrading/i, /installing/i, /gem/i])
       not_matching = Regexp.union([/step/i])
-      execute_filtered_process(build_command, matching,
+      process_runner.execute_filtered_process(build_command, matching,
                                not_matching) do |stderr, process_thread|
-        execute_command_if_not_stderr(run_command, stderr, process_thread)
+        process_runner.execute_command_if_not_stderr(run_command, stderr, process_thread)
       end
-    end
-  end
-
-  # Runs *command* and only prints those lines that match
-  # *matching_regex* and doesn't match *not_matching_regex*. After
-  # execution, it passes *stderr* and the waiting *process_thread*
-  # to a block.
-  def execute_filtered_process(command, matching_regex,
-                               not_matching_regex, &_block)
-    Open3.popen3(command) do |_stdin, stdout, stderr, process_thread|
-      stdout.each_line do |outline|
-        if outline.match(matching_regex) &&
-           !outline.match(not_matching_regex)
-          puts outline
-        end
-      end
-
-      # Yield to block to process next set of commands or handle stderr
-      yield(stderr, process_thread)
-    end
-  end
-
-  # Executes *new_command* if the previous *process_thread* had a
-  # non-zero return. Otherwise prints out *stderr* of the previous
-  # process to *STDERR*
-  def execute_command_if_not_stderr(new_command, stderr, process_thread)
-    outerror = stderr.read.chomp
-    if process_thread.value.to_i.zero?
-      system(new_command)
-    else
-      STDERR.puts outerror
     end
   end
 end
