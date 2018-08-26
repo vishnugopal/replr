@@ -10,7 +10,7 @@ module Replr
   # Creates a REPL using template Dockerfiles & libraries
   class REPLMaker
     attr_reader :argument_processor, :process_runner
-    attr_reader :libraries, :workdir, :docker_image_tag
+    attr_reader :libraries, :workdir
 
     def start
       @argument_processor = Replr::ArgumentProcessor.new
@@ -18,13 +18,19 @@ module Replr
 
       @libraries = argument_processor.arguments[1..-1].sort!
       @workdir = Dir.mktmpdir
-      @docker_image_tag = "replr/ruby-#{libraries.join('-')}"
 
       check_docker!
       execute_processsed_arguments!
     end
 
     private
+
+    def docker_image_tag
+      normalized_library_string = libraries.map do |library|
+        library.gsub(':', '-v')
+      end.join('-')
+      "replr/ruby-#{normalized_library_string}"
+    end
 
     def execute_processsed_arguments!
       if argument_processor.arguments[0] == 'prune'
@@ -70,7 +76,12 @@ module Replr
     def library_file_with(libraries)
       gemfile = "source 'https://rubygems.org/'\n"
       libraries.each do |library|
-        gemfile << "gem '#{library}'\n"
+        if library.include?(':')
+          library, version = library.split(':')
+          gemfile << "gem '#{library}', '#{version}'\n"
+        else
+          gemfile << "gem '#{library}'\n"
+        end
       end
       gemfile
     end
