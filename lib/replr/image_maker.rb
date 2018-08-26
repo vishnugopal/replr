@@ -1,59 +1,35 @@
 require_relative '../replr'
+require_relative 'argument_processor'
 
 require 'tmpdir'
 require 'open3'
 
 # :nodoc:
 class Replr::ImageMaker
-  attr_reader :arguments, :workdir, :docker_image_tag, :libraries
+  attr_reader :argument_processor, :workdir, :docker_image_tag, :libraries
 
   def start
-    @arguments = ARGV.map { |argument| argument.downcase.strip }
-    @libraries = arguments[1..-1].sort!
+    @argument_processor = Replr::ArgumentProcessor.new
+    @libraries = argument_processor.arguments[1..-1].sort!
 
     check_docker!
-    check_argument_length!
-    check_arguments!
 
     @workdir = Dir.mktmpdir
     @docker_image_tag = "replr/ruby-#{libraries.join('-')}"
 
-    process_arguments
+    execute_processsed_arguments!
   end
 
   private
 
-  def process_arguments
-    if arguments[0] == 'prune'
+  def execute_processsed_arguments!
+    if argument_processor.arguments[0] == 'prune'
       execute_prune_command
     else
       copy_library_file
       copy_docker_file
       initialize_docker_repl
     end
-  end
-
-  def check_argument_length!
-    if arguments.empty?
-      puts_usage
-      exit
-    end
-  end
-
-  def check_arguments!
-    unless ['ruby', 'prune'].include? arguments[0]
-      puts_error 'Only supports ruby as a stack right now'
-      puts_usage
-      exit
-    end
-  end
-
-  def puts_usage
-    puts_error "\nUsage: replr <stack> <libraries...>\n\n"
-    puts_error "A single line REPL for your favorite languages & libraries\n\n"
-    puts_error "\t<stack> is now only 'ruby'"
-    puts_error "\t<libraries...> is a space separated list of libraries for the stack\n\n"
-    puts_error "More commands:\n\n\treplr prune to delete all replr docker images (this saves space)"
   end
 
   def execute_prune_command

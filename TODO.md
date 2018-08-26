@@ -2,7 +2,6 @@
 
 ## Planned
 
-- [ ] Separate argument processing & usage into separate class
 - [ ] Support versioning for library
 - [ ] Support versioning for stack
 - [ ] Re-architect to abstract away all stack dependencies
@@ -10,6 +9,7 @@
 
 ## Done
 
+- [x] Separate argument processing & usage into separate class
 - [x] Re-architect to start separating argument processing
 - [x] Sort arguments so that unnecessary images aren't created
 - [x] Have a `replr prune` command to delete all docker images created by replr
