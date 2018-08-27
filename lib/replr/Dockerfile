@@ -1,4 +1,4 @@
-FROM ruby:2.3.1-alpine
+FROM ruby:alpine
 ADD Gemfile /app/
 RUN apk --update add --virtual build-dependencies ruby-dev build-base && \
   gem install bundler --no-ri --no-rdoc && \

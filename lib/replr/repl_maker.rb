@@ -25,11 +25,11 @@ module Replr
 
     private
 
-    def docker_image_tag
-      normalized_library_string = libraries.map do |library|
-        library.gsub(':', '-v')
-      end.join('-')
-      "replr/ruby-#{normalized_library_string}"
+    def check_docker!
+      unless process_runner.process_exists?('docker')
+        puts_error 'Needs docker installed & in path to work.'
+        exit
+      end
     end
 
     def execute_processsed_arguments!
@@ -45,13 +45,6 @@ module Replr
     def execute_prune_command
       prune_command = %q(docker images -a |  grep "replr/" | awk '{print $3}' | xargs docker rmi)
       process_runner.execute_command(prune_command)
-    end
-
-    def check_docker!
-      unless process_runner.process_exists?('docker')
-        puts_error 'Needs docker installed & in path to work.'
-        exit
-      end
     end
 
     def puts_error(string)
@@ -97,6 +90,13 @@ module Replr
           process_runner.execute_command_if_not_stderr(run_command, stderr, process_thread)
         end
       end
+    end
+
+    def docker_image_tag
+      normalized_library_string = libraries.map do |library|
+        library.gsub(':', '-v')
+      end.join('-')
+      "replr/ruby-#{normalized_library_string}"
     end
   end
 end

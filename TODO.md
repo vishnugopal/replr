@@ -8,7 +8,7 @@
 
 ## Done
 
-- [x] Support versioning for library
+- [x] Support versioning for libraries
 - [x] Separate command execution into separate class
 - [x] Separate argument processing & usage into separate class
 - [x] Re-architect to start separating argument processing
