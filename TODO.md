@@ -3,6 +3,7 @@
 ## Planned
 
 - [ ] Output friendly errors for malformed input of all kinds
+- [ ] Add integration tests for all common command-line combos
 - [ ] Re-architect to abstract away all stack dependencies
 - [ ] Support another stack: Python?
 
