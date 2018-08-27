@@ -4,6 +4,9 @@ require_relative '../replr'
 module Replr
   # Processes command-line arguments
   class ArgumentProcessor
+    COMMANDS = ['prune']
+    STACKS = ['ruby']
+
     attr_reader :arguments
 
     def initialize
@@ -20,8 +23,18 @@ module Replr
     end
 
     def check_arguments!
-      unless ['ruby', 'prune'].include? arguments[0]
-        puts_error 'Only supports ruby as a stack right now'
+      valid_stack = STACKS.detect do |stack|
+        arguments[0].match(/^#{stack}:?.*?/)
+      end
+      valid_command = COMMANDS.detect do |command|
+        arguments[0] == command
+      end
+
+      unless valid_stack or valid_command
+        puts_error "First argument must be either be a command:
+\t#{COMMANDS.join(' ')}
+or one of a supported stack:
+\t#{STACKS.join(' ')}"
         puts_usage
         exit
       end
@@ -33,6 +46,10 @@ module Replr
       puts_error "\t<stack> is now only 'ruby'"
       puts_error "\t<libraries...> is a space separated list of libraries for the stack\n\n"
       puts_error "More commands:\n\n\treplr prune to delete all replr docker images (this saves space)"
+    end
+
+    def puts_error(string)
+      STDERR.puts(string)
     end
   end
 end

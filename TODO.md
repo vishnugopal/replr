@@ -2,12 +2,13 @@
 
 ## Planned
 
-- [ ] Support versioning for stack
+- [ ] Output friendly errors for malformed input of all kinds
 - [ ] Re-architect to abstract away all stack dependencies
 - [ ] Support another stack: Python?
 
 ## Done
 
+- [x] Support versioning for stack
 - [x] Support versioning for libraries
 - [x] Separate command execution into separate class
 - [x] Separate argument processing & usage into separate class

@@ -16,10 +16,10 @@ So for a simple `ruby` REPL, including the `chronic` gem, it would be:
 replr ruby chronic
 ```
 
-You can also specify multiple libraries & specific versions of libraries to install:
+You can also specify multiple libraries & specific versions of stacks & libraries to install:
 
 ```
-replr ruby chronic:0.10.1 activesupport:5.1.0
+replr ruby:2.3.1 chronic:0.10.1 activesupport:5.1.0
 ```
 
 That's it! It's very simple.

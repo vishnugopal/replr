@@ -10,12 +10,13 @@ module Replr
   # Creates a REPL using template Dockerfiles & libraries
   class REPLMaker
     attr_reader :argument_processor, :process_runner
-    attr_reader :libraries, :workdir
+    attr_reader :stack, :libraries, :workdir
 
     def start
       @argument_processor = Replr::ArgumentProcessor.new
       @process_runner = Replr::ProcessRunner.new
 
+      @stack = argument_processor.arguments[0]
       @libraries = argument_processor.arguments[1..-1].sort!
       @workdir = Dir.mktmpdir
 
@@ -37,7 +38,7 @@ module Replr
         execute_prune_command
       else
         copy_library_file
-        copy_docker_file
+        copy_initialization_files
         initialize_docker_repl
       end
     end
@@ -59,11 +60,20 @@ module Replr
       end
     end
 
-    def copy_docker_file
-      docker_file = "#{__dir__}/Dockerfile"
+    def copy_initialization_files
+      create_docker_file
       bootstrap_file = "#{__dir__}/replr-bootstrap.rb"
-      FileUtils.cp(docker_file, workdir)
       FileUtils.cp(bootstrap_file, workdir)
+    end
+
+    def create_docker_file
+      _stack, version = stack.split(':')
+      docker_file_template = "#{__dir__}/Dockerfile.template"
+      docker_file_contents = File.read(docker_file_template)
+      docker_file_contents.gsub!('%%VERSION%%', version ? "#{version}-" : '')
+      File.open(File.join(workdir, 'Dockerfile'), 'w') do |file|
+        file.puts docker_file_contents
+      end
     end
 
     def library_file_with(libraries)
@@ -96,7 +106,9 @@ module Replr
       normalized_library_string = libraries.map do |library|
         library.gsub(':', '-v')
       end.join('-')
-      "replr/ruby-#{normalized_library_string}"
+      normalized_stack_string = stack.gsub(':', '-v')
+
+      "replr/#{normalized_stack_string}-#{normalized_library_string}"
     end
   end
 end
