@@ -10,14 +10,12 @@ module Replr
   # Creates a REPL using template Dockerfiles & libraries
   class REPLMaker
     attr_reader :argument_processor, :process_runner
-    attr_reader :stack, :libraries, :workdir
+    attr_reader :workdir
 
     def start
       @argument_processor = Replr::ArgumentProcessor.new
       @process_runner = Replr::ProcessRunner.new
 
-      @stack = argument_processor.arguments[0]
-      @libraries = argument_processor.arguments[1..-1].sort!
       @workdir = Dir.mktmpdir
 
       check_docker!
@@ -34,7 +32,7 @@ module Replr
     end
 
     def execute_processsed_arguments!
-      if argument_processor.arguments[0] == 'prune'
+      if argument_processor.command == 'prune'
         execute_prune_command
       else
         copy_library_file
@@ -55,7 +53,7 @@ module Replr
     def copy_library_file
       Dir.chdir(workdir) do
         File.open('Gemfile', 'w') do |f|
-          f.write(library_file_with(libraries))
+          f.write(library_file_with(argument_processor.libraries))
         end
       end
     end
@@ -67,7 +65,7 @@ module Replr
     end
 
     def create_docker_file
-      _stack, version = stack.split(':')
+      _stack, version = argument_processor.stack.split(':')
       docker_file_template = "#{__dir__}/Dockerfile.template"
       docker_file_contents = File.read(docker_file_template)
       docker_file_contents.gsub!('%%VERSION%%', version ? "#{version}-" : '')
@@ -103,10 +101,10 @@ module Replr
     end
 
     def docker_image_tag
-      normalized_library_string = libraries.map do |library|
+      normalized_library_string = argument_processor.libraries.map do |library|
         library.gsub(':', '-v')
       end.join('-')
-      normalized_stack_string = stack.gsub(':', '-v')
+      normalized_stack_string = argument_processor.stack.gsub(':', '-v')
 
       "replr/#{normalized_stack_string}-#{normalized_library_string}"
     end

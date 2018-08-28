@@ -7,7 +7,7 @@ module Replr
     COMMANDS = ['prune']
     STACKS = ['ruby']
 
-    attr_reader :arguments
+    attr_reader :arguments, :stack, :command, :libraries
 
     def initialize
       @arguments = ARGV.map { |argument| argument.downcase.strip }
@@ -23,14 +23,15 @@ module Replr
     end
 
     def check_arguments!
-      valid_stack = STACKS.detect do |stack|
+      @stack = STACKS.detect do |stack|
         arguments[0].match(/^#{stack}:?.*?/)
       end
-      valid_command = COMMANDS.detect do |command|
+      @command = COMMANDS.detect do |command|
         arguments[0] == command
       end
+      @libraries = arguments[1..-1].sort!
 
-      unless valid_stack or valid_command
+      unless @stack || @command
         puts_error "First argument must be either be a command:
 \t#{COMMANDS.join(' ')}
 or one of a supported stack:
