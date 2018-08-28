@@ -4,8 +4,8 @@ require_relative '../replr'
 module Replr
   # Processes command-line arguments
   class ArgumentProcessor
-    COMMANDS = ['prune']
-    STACKS = ['ruby']
+    COMMANDS = ['prune'].freeze
+    STACKS = ['ruby'].freeze
 
     attr_reader :arguments, :stack, :command, :libraries
 
@@ -23,22 +23,33 @@ module Replr
     end
 
     def check_arguments!
-      @stack = STACKS.detect do |stack|
-        arguments[0].match(/^#{stack}:?.*?/)
-      end
-      @command = COMMANDS.detect do |command|
-        arguments[0] == command
-      end
-      @libraries = arguments[1..-1].sort!
+      detect_stack
+      detect_command
+      detect_libraries
 
-      unless @stack || @command
+      unless stack || command
         puts_error "First argument must be either be a command:
-\t#{COMMANDS.join(' ')}
-or one of a supported stack:
+\t#{COMMANDS.join(' ')}\nor one of a supported stack:
 \t#{STACKS.join(' ')}"
         puts_usage
         exit
       end
+    end
+
+    def detect_stack
+      @stack = STACKS.detect do |stack|
+        arguments[0].match(/^#{stack}:?.*?/)
+      end
+    end
+
+    def detect_command
+      @command = COMMANDS.detect do |command|
+        arguments[0] == command
+      end
+    end
+
+    def detect_libraries
+      @libraries = arguments[1..-1].sort!
     end
 
     def puts_usage
