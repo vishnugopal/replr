@@ -32,8 +32,8 @@ module Replr
       if argument_processor.command == 'prune'
         execute_prune_command
       elsif argument_processor.stack == 'ruby'
-        require_relative 'ruby_repl_maker'
-        ruby_repl_maker = Replr::RubyREPLMaker.new(
+        require_relative 'stack/ruby/repl_maker'
+        ruby_repl_maker = Replr::Stack::Ruby::REPLMaker.new(
           stack: argument_processor.stack,
           libraries: argument_processor.libraries
         )
