@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/replr'
-Replr::REPLMaker.new.start
+Replr::Boot.new.start
