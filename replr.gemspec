@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.summary = 'A single line REPL for your favorite languages & libraries.'
   s.authors     = ['Vishnu Gopal']
   s.email       = 'vg@vishnugopal.com'
-  s.files = ['Gemfile'] + ['lib/replr/Dockerfile.template'] + Dir['lib/**/*.rb']
+  s.files = ['Gemfile'] + Dir['lib/**/Dockerfile.template'] + Dir['lib/**/*.rb']
   s.require_paths = ['lib']
 
   s.homepage = 'https://github.com/vishnugopal/replr'
