@@ -1,7 +1,6 @@
 require_relative '../replr'
 require_relative 'argument_processor'
 require_relative 'process_runner'
-require_relative 'ruby_repl_maker'
 
 require 'tmpdir'
 require 'open3'
@@ -10,15 +9,11 @@ require 'open3'
 module Replr
   # Starts up REPL creation & wires up rest of the pieces
   class Boot
-    attr_reader :argument_processor, :process_runner, :ruby_repl_maker
+    attr_reader :argument_processor, :process_runner
 
     def start
       @argument_processor = Replr::ArgumentProcessor.new
       @process_runner = Replr::ProcessRunner.new
-      @ruby_repl_maker = Replr::RubyREPLMaker.new(
-        stack: argument_processor.stack,
-        libraries: argument_processor.libraries
-      )
 
       check_docker!
       execute_processsed_arguments!
@@ -37,6 +32,11 @@ module Replr
       if argument_processor.command == 'prune'
         execute_prune_command
       elsif argument_processor.stack == 'ruby'
+        require_relative 'ruby_repl_maker'
+        ruby_repl_maker = Replr::RubyREPLMaker.new(
+          stack: argument_processor.stack,
+          libraries: argument_processor.libraries
+        )
         ruby_repl_maker.create
       end
     end
