@@ -4,7 +4,7 @@ require_relative 'process_runner'
 # :nodoc:
 module Replr
   # Creates a REPL using docker for a stack and libraries combo
-  class REPLMaker
+  class RubyREPLMaker
     attr_reader :process_runner
     attr_reader :stack, :libraries, :workdir
 
@@ -15,6 +15,14 @@ module Replr
       @libraries = libraries
       @workdir = Dir.mktmpdir
     end
+
+    def create
+      copy_library_file
+      copy_initialization_files
+      initialize_docker_repl
+    end
+
+    private
 
     def copy_library_file
       Dir.chdir(workdir) do

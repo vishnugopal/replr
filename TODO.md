@@ -9,6 +9,7 @@
 
 ## Done
 
+- [x] Re-architect to prepare for supporting an additional stack
 - [x] Support versioning for stack
 - [x] Support versioning for libraries
 - [x] Separate command execution into separate class
