@@ -16,7 +16,13 @@ So for a simple `ruby` REPL, including the `chronic` gem, it would be:
 replr ruby chronic
 ```
 
-You can also specify multiple libraries & specific versions of stacks & libraries to install:
+Or for a `python` REPL, including the flask and requests packages, it would be:
+
+```
+replr python flask requests
+```
+
+You can also specify versions of stacks & libraries to install:
 
 ```
 replr ruby:2.3.1 chronic:0.10.1 activesupport:5.1.0

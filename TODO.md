@@ -2,13 +2,13 @@
 
 ## Planned
 
-- [ ] Support another stack: Python?
 - [ ] Output friendly errors for malformed input of all kinds
 - [ ] Add integration tests for all common command-line combos
 - [ ] Re-architect to abstract away all stack dependencies
 
 ## Done
 
+- [x] Support another stack: Python
 - [x] Re-architect to prepare for supporting an additional stack
 - [x] Support versioning for stack
 - [x] Support versioning for libraries

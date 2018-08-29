@@ -5,7 +5,7 @@ module Replr
   # Processes command-line arguments
   class ArgumentProcessor
     COMMANDS = ['prune'].freeze
-    STACKS = ['ruby'].freeze
+    STACKS = ['ruby', 'python'].freeze
 
     attr_reader :arguments, :stack, :command, :libraries
 
@@ -37,8 +37,14 @@ module Replr
     end
 
     def detect_stack
-      @stack = STACKS.detect do |stack|
+      stack = STACKS.detect do |stack|
         arguments[0].match(/^#{stack}:?.*?/)
+      end
+
+      # return the full stack string (that includes version)
+      # instead of just the stack name
+      if stack
+        @stack = arguments[0]
       end
     end
 
