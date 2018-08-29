@@ -32,20 +32,9 @@ module Replr
     def execute_processsed_arguments!
       if argument_processor.command == 'prune'
         execute_prune_command
-      elsif argument_processor.stack.match(/^ruby:?.*?/)
-        require_relative 'stack/ruby/repl_maker'
-        ruby_repl_maker = Replr::Stack::Ruby::REPLMaker.new(
-          stack: argument_processor.stack,
-          libraries: argument_processor.libraries
-        )
-        ruby_repl_maker.create
-      elsif argument_processor.stack.match(/^python:?.*?/)
-        require_relative 'stack/python/repl_maker'
-        python_repl_maker = Replr::Stack::Python::REPLMaker.new(
-          stack: argument_processor.stack,
-          libraries: argument_processor.libraries
-        )
-        python_repl_maker.create
+      elsif argument_processor.stack
+        Replr::Stack::REPLMaker.load(stack: argument_processor.stack,
+                                     libraries: argument_processor.libraries)
       end
     end
 

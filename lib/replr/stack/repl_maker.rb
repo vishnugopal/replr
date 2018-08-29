@@ -13,6 +13,18 @@ module Replr
                   :filter_matching_lines_for_install,
                   :filter_not_matching_lines_for_install
 
+      def self.load(stack:, libraries:)
+        stack_name, _stack_ersion = stack.split(':')
+        require_relative "#{stack}/repl_maker"
+
+        repl_maker_class_name = "Replr::Stack::#{stack_name.capitalize}::REPLMaker"
+        repl_maker = Object.const_get(repl_maker_class_name).new(
+          stack: stack,
+          libraries: libraries
+        )
+        repl_maker.create
+      end
+
       def initialize(stack:, libraries:)
         @process_runner = Replr::ProcessRunner.new
 
