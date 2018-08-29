@@ -2,8 +2,9 @@
 
 ## Planned
 
-- [ ] Output friendly errors for malformed input of all kinds
+- [ ] Clean up & DRY multiple stack implementation
 - [ ] Add integration tests for all common command-line combos
+- [ ] Output friendly errors for malformed input of all kinds
 - [ ] Re-architect to abstract away all stack dependencies
 
 ## Done
