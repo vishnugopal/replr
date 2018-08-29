@@ -2,13 +2,14 @@
 
 ## Planned
 
-- [ ] Clean up & DRY multiple stack implementation
+- [ ] Add nodejs REPL
 - [ ] Add integration tests for all common command-line combos
 - [ ] Output friendly errors for malformed input of all kinds
-- [ ] Re-architect to abstract away all stack dependencies
+- [ ] Make a project website at replr.github.io
 
 ## Done
 
+- [x] Clean up & DRY multiple stack implementation
 - [x] Support another stack: Python
 - [x] Re-architect to prepare for supporting an additional stack
 - [x] Support versioning for stack

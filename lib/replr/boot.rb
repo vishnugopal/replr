@@ -1,6 +1,7 @@
 require_relative '../replr'
 require_relative 'argument_processor'
 require_relative 'process_runner'
+require_relative 'stack/repl_maker'
 
 require 'tmpdir'
 require 'open3'
