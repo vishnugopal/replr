@@ -1,4 +1,6 @@
-require_relative '../replr'
+require 'open3'
+require 'pty'
+require 'expect'
 
 module Replr
   # Executes and manages processes
@@ -43,6 +45,25 @@ module Replr
       else
         STDERR.puts outerror
       end
+    end
+
+    def execute_repl_with_input(command:, inputs:, prompt_line:, expected_output:)
+      outputs = []
+
+      PTY.spawn(command) do |r, w, pid|
+        # r is the REPL's stdout/stderr and w is stdin
+        r.expect(prompt_line)
+        inputs << ""
+        inputs.each do |cmd|
+          w.puts cmd
+          r.flush
+          r.expect(/(.*?)\r\n(.*)>/m) do |res|
+            outputs << res[2].match(expected_output) if res
+          end
+        end
+      end
+
+      outputs.any? { |output| output.is_a? MatchData }
     end
   end
 end

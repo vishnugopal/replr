@@ -1,5 +1,3 @@
-require_relative '../replr'
-
 # :nodoc:
 module Replr
   # Processes command-line arguments
@@ -37,13 +35,13 @@ module Replr
     end
 
     def detect_stack
-      stack = STACKS.detect do |stack|
+      detected_stack = STACKS.detect do |stack|
         arguments[0].match(/^#{stack}:?.*?/)
       end
 
       # return the full stack string (that includes version)
       # instead of just the stack name
-      if stack
+      if detected_stack
         @stack = arguments[0]
       end
     end
@@ -61,7 +59,7 @@ module Replr
     def puts_usage
       puts_error "\nUsage: replr <stack> <libraries...>\n\n"
       puts_error "A single line REPL for your favorite languages & libraries\n\n"
-      puts_error "\t<stack> is now only 'ruby'"
+      puts_error "\t<stack> is now one of #{STACKS.join(', ')}"
       puts_error "\t<libraries...> is a space separated list of libraries for the stack\n\n"
       puts_error "More commands:\n\n\treplr prune to delete all replr docker images (this saves space)"
     end

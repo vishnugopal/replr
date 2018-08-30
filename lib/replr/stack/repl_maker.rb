@@ -1,4 +1,3 @@
-require_relative '../../replr'
 require_relative '../process_runner'
 
 # :nodoc:
