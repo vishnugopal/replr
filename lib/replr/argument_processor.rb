@@ -5,7 +5,7 @@ module Replr
   # Processes command-line arguments
   class ArgumentProcessor
     COMMANDS = ['prune'].freeze
-    STACKS = ['ruby', 'python'].freeze
+    STACKS = ['ruby', 'python', 'node'].freeze
 
     attr_reader :arguments, :stack, :command, :libraries
 

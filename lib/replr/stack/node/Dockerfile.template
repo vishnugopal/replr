@@ -1,0 +1,6 @@
+FROM node:%%VERSION%%alpine
+ADD package.json /app/
+RUN cd /app ; npm install
+ADD . /app
+WORKDIR /app
+CMD ["npm", "run", "start"]

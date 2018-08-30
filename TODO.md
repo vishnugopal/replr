@@ -2,13 +2,13 @@
 
 ## Planned
 
-- [ ] Add nodejs REPL
 - [ ] Add integration tests for all common command-line combos
 - [ ] Output friendly errors for malformed input of all kinds
-- [ ] Make a project website at replr.github.io
+- [ ] Make a project website at vishnugopal.github.io/replr
 
 ## Done
 
+- [x] Add nodejs REPL
 - [x] Clean up & DRY multiple stack implementation
 - [x] Support another stack: Python
 - [x] Re-architect to prepare for supporting an additional stack
