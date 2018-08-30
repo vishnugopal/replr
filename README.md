@@ -28,7 +28,7 @@ You can also specify versions of stacks & libraries to install:
 replr ruby:2.3.1 chronic:0.10.1 activesupport:5.1.0
 ```
 
-That's it! It's very simple.
+That's it! It's very simple. Replr currently supports three stacks: `ruby`, `python` and `node`.
 
 ## Install
 
