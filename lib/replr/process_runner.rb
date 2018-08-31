@@ -49,16 +49,15 @@ module Replr
 
     def execute_repl_with_input(command:, inputs:, prompt_line:, expected_output:)
       outputs = []
+      inputs << ''
 
-      PTY.spawn(command) do |r, w, pid|
-        # r is the REPL's stdout/stderr and w is stdin
-        r.expect(prompt_line)
-        inputs << ""
+      PTY.spawn(command) do |read, write, _pid|
+        read.expect(prompt_line)
         inputs.each do |cmd|
-          w.puts cmd
-          r.flush
-          r.expect(/(.*?)\r\n(.*)>/m) do |res|
-            outputs << res[2].match(expected_output) if res
+          write.puts cmd
+          read.flush
+          read.expect(/(.*?)\r\n(.*)>/m) do |output|
+            outputs << output[2].match(expected_output) if output
           end
         end
       end
