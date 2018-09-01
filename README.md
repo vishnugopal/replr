@@ -60,6 +60,12 @@ Most of the "scaffolding" around creating the REPL & dealing with docker's imple
 - creating a library file ([example](lib/replr/stack/node/repl_maker.rb#L32)) from mentioned gems and versions.
 - & setting appropriate `set_filter_lines_for_install` ([example](lib/replr/stack/node/repl_maker.rb#L27)) to mask away unnecessary output during installation.
 
+Note: if you want to run the specs (built with `minitest/spec`), please do:
+
+```
+bundle exec rake test
+```
+
 ## Details
 
 replr uses docker to manage different stacks and installed libraries. It creates docker images that are tagged `replr-<stack>-<libraries...>` for each stack and library combo you initiate.
