@@ -54,7 +54,7 @@ replr is built on Ruby and requires a Ruby 2.5+ installed to develop. It's prett
 
 Most of the "scaffolding" around creating the REPL & dealing with docker's implementation details have been abstracted away if you use the `Replr::Stack::REPLMaker` class, so you only need to implement stack-specific functionality. This includes:
 
-- creating a `Dockerfile.template`([example](lib/replr/stack/node/Dockerfile.template)) (with %%VERSION%% tags) for the stack.
+- creating a `Dockerfile.template`([example](lib/replr/stack/node/Dockerfile.template)) (with `%%VERSION%%` tags) for the stack.
 - creating a library file ([example](lib/replr/stack/node/repl_maker.rb#L32)) from mentioned gems and versions.
 - & setting appropriate `set_filter_lines_for_install` ([example](lib/replr/stack/node/repl_maker.rb#L27)) to mask away unnecessary output during installation.
 
