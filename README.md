@@ -2,7 +2,9 @@
 
 A single line REPL for your favorite languages & libraries. Built on Docker.
 
-This is currently usable, but only supports the `ruby` stack. See [TODO](TODO.md) for future work.
+This is currently usable & stable, and supports the `ruby`, `python` and `node` stacks.
+
+See [TODO](TODO.md) for future work.
 
 ## Quickstart
 

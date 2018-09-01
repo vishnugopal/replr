@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.files = ['Gemfile'] + Dir['lib/**/*.*']
   s.require_paths = ['lib']
 
-  s.add_development_dependency 'minitest'
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'minitest', '~> 0'
+  s.add_development_dependency 'rake', '~> 0'
 
   s.homepage = 'https://github.com/vishnugopal/replr'
   s.license = 'MIT'

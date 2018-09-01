@@ -2,12 +2,13 @@
 
 ## Planned
 
-- [ ] Add integration tests for all common command-line combos
-- [ ] Output friendly errors for malformed input of all kinds
 - [ ] Make a project website at vishnugopal.github.io/replr
+- [ ] Make `replr prune` also stop orphaned containers
+- [ ] Output friendly errors for malformed input of all kinds
 
 ## Done
 
+- [x] Add integration tests for all common command-line combos
 - [x] Add nodejs REPL
 - [x] Clean up & DRY multiple stack implementation
 - [x] Support another stack: Python
