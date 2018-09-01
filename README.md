@@ -48,6 +48,16 @@ replr prune
 
 will delete all docker images associated with replr. This saves space!
 
+## Contributing & Development
+
+replr is built on Ruby and requires a Ruby 2.5.1+ installed to develop. It's pretty easy to get started and add a stack, please see [lib/replr/stack/node/repl_maker.rb](node's implementation) for a quick-start. There's also a companion integration spec that tests expected behavior in [spec/replr/stack/node/repl_maker_spec.rb](node's test suite) that you should emulate and implement for every stack you make.
+
+Most of the "scaffolding" around creating the REPL & dealing with docker's implementation details have been abstracted away if you use the `Replr::Stack::REPLMaker` class, so you only need to implement stack-specific functionality. This includes:
+
+- creating a Dockerfile.template (with %%VERSION%% tags) for the stack.
+- creating a library file from mentioned gems and versions
+- & setting appropriate `set_filter_lines_for_install` to mask away unnecessary output during installation.
+
 ## Details
 
 replr uses docker to manage different stacks and installed libraries. It creates docker images that are tagged `replr-<stack>-<libraries...>` for each stack and library combo you initiate.

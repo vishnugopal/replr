@@ -5,7 +5,7 @@ require 'minitest/autorun'
 require 'replr/process_runner'
 require 'replr/stack/ruby/repl_maker'
 
-require_relative '../spec_helper'
+require_relative '../../../spec_helper'
 
 describe Replr::Stack::Ruby::REPLMaker do
   include SpecHelper
