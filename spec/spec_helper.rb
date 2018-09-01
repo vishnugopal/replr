@@ -1,7 +1,8 @@
 module SpecHelper
-  def configure_erwi(command_prefix:, exit_line:)
+  def configure_erwi(command_prefix:, exit_line:, prompt_line:)
     @command_prefix = command_prefix
     @exit_line = exit_line
+    @prompt_line = prompt_line
   end
 
   #
@@ -15,10 +16,11 @@ module SpecHelper
   # make sure we close the REPL stream correctly. Otherwise, we leave orphan
   # docker processes lying around.
   #
-  def erwi(command, inputs, prompt_line, expected_output)
+  def erwi(command, inputs, expected_output, debug: false)
     Replr::ProcessRunner.new.execute_repl_with_input(command: "#{@command_prefix} #{command}",
                                                      inputs: inputs + [@exit_line],
-                                                     prompt_line: prompt_line,
-                                                     expected_output: expected_output)
+                                                     prompt_line: @prompt_line,
+                                                     expected_output: expected_output,
+                                                     debug: debug)
   end
 end

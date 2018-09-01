@@ -47,17 +47,22 @@ module Replr
       end
     end
 
-    def execute_repl_with_input(command:, inputs:, prompt_line:, expected_output:)
+    def execute_repl_with_input(command:, inputs:, prompt_line:, expected_output:, debug: false)
       outputs = []
       inputs << ''
 
       PTY.spawn(command) do |read, write, _pid|
         read.expect(prompt_line)
         inputs.each do |cmd|
-          write.puts cmd
-          read.flush
-          read.expect(/(.*?)\r\n(.*)>/m) do |output|
-            outputs << output[2].match(expected_output) if output
+          begin
+            write.puts cmd
+            read.flush
+            read.expect(/(.*?)\r\n(.*)>/m) do |output|
+              puts "DEBUG: OUTPUT: #{output.inspect}" if debug
+              outputs << output[2].match(expected_output) if output
+            end
+          rescue Errno::EIO
+            next
           end
         end
       end
