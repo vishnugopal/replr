@@ -50,13 +50,13 @@ will delete all docker images associated with replr. This saves space!
 
 ## Contributing & Development
 
-replr is built on Ruby and requires a Ruby 2.5.1+ installed to develop. It's pretty easy to get started and add a stack, please see [lib/replr/stack/node/repl_maker.rb](node's implementation) for a quick-start. There's also a companion integration spec that tests expected behavior in [spec/replr/stack/node/repl_maker_spec.rb](node's test suite) that you should emulate and implement for every stack you make.
+replr is built on Ruby and requires a Ruby 2.5+ installed to develop. It's pretty easy to get started and add a stack, please see [node's implementation](lib/replr/stack/node/repl_maker.rb) for a quick-start. There's also a companion integration spec that tests expected behavior in [node's test suite](spec/replr/stack/node/repl_maker_spec.rb) that you should emulate and implement for every stack you make.
 
 Most of the "scaffolding" around creating the REPL & dealing with docker's implementation details have been abstracted away if you use the `Replr::Stack::REPLMaker` class, so you only need to implement stack-specific functionality. This includes:
 
-- creating a Dockerfile.template (with %%VERSION%% tags) for the stack.
-- creating a library file from mentioned gems and versions
-- & setting appropriate `set_filter_lines_for_install` to mask away unnecessary output during installation.
+- creating a `Dockerfile.template`([example](lib/replr/stack/node/Dockerfile.template)) (with %%VERSION%% tags) for the stack.
+- creating a library file ([example](lib/replr/stack/node/repl_maker.rb#L32)) from mentioned gems and versions.
+- & setting appropriate `set_filter_lines_for_install` ([example](lib/replr/stack/node/repl_maker.rb#L27)) to mask away unnecessary output during installation.
 
 ## Details
 
@@ -111,6 +111,6 @@ irb(main):001:0> Chronic.parse("tomorrow")
 irb(main):002:0>
 ```
 
-As you can see, replr tries its best to abstract away the underlying docker installation. You shouldn't have to worry about Dockerfiles & so on just to get a REPL!
+As you can see, replr tries its best to abstract away the underlying docker installation. You shouldn't have to worry about Dockerfile & so on just to get a REPL!
 
 It also tries its best to make sure libraries you mention are auto-required in the REPL, so you don't have to do any additional work!
